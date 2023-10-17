@@ -9,6 +9,8 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.18",
+    "@material-tailwind/react": "^2.1.2",
     "@rainbow-me/rainbowkit": "^1.0.11",
     "ethers": "^6.7.1",
     "next": "latest",
@@ -20,7 +22,7 @@
   },
   "devDependencies": {
     "@types/node": "^12.12.21",
-    "@types/react": "^17.0.2",
+    "@types/react": "^18.2.21",
     "@types/react-dom": "^17.0.1",
     "autoprefixer": "^10.4.16",
     "encoding": "^0.1.13",

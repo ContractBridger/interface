@@ -4,6 +4,7 @@ import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { mainnet, sepolia, bsc, bscTestnet } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { ToastContainer } from "react-toastify";
+import { ThemeProvider } from "@material-tailwind/react";
 
 const { chains, publicClient } = configureChains(
   [mainnet, sepolia, bsc, bscTestnet],
@@ -28,25 +29,27 @@ const wagmiConfig = createConfig({
 
 const Providers = ({ children }) => {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains} appInfo={appInfo} modalSize="wide">
-        <ToastContainer
-          position="top-right"
-          autoClose={4500}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
+    <ThemeProvider>
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains} appInfo={appInfo} modalSize="wide">
+          <ToastContainer
+            position="top-right"
+            autoClose={4500}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+          />
 
-        {children}
-        <ToastContainer />
-      </RainbowKitProvider>
-    </WagmiConfig>
+          {children}
+          <ToastContainer />
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </ThemeProvider>
   );
 };
 
