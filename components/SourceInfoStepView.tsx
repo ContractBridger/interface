@@ -8,43 +8,23 @@ import {
   MenuHandler,
   MenuItem,
   MenuList,
+  Option,
+  Select,
   Typography,
 } from "@material-tailwind/react";
 import { useState } from "react";
 
-const ChainDropdown = () => {
+export const ChainDropdown = () => {
   const chains = ["mainnet", "sepola", "bsc", "bsc testnet"];
-  const [openMenu, setOpenMenu] = useState(false);
   return (
-    <Menu open={openMenu} handler={setOpenMenu} allowHover>
-      <MenuHandler>
-        <Button
-          variant="text"
-          className="flex items-center gap-3 text-base font-normal capitalize tracking-normal"
-        >
-          {chains[0]}{" "}
-          <ChevronDownIcon
-            strokeWidth={2.5}
-            className={`h-3.5 w-3.5 transition-transform ${
-              openMenu ? "rotate-180" : ""
-            }`}
-          />
-        </Button>
-      </MenuHandler>
-      <MenuList className="hidden overflow-visible lg:block">
-        <ul className="flex w-full flex-col gap-1">
-          {chains.map((item, index) => (
-            <a href="#" key={index}>
-              <MenuItem>
-                <Typography variant="h6" color="blue-gray" className="mb-1">
-                  {item}
-                </Typography>
-              </MenuItem>
-            </a>
-          ))}
-        </ul>
-      </MenuList>
-    </Menu>
+    <div className="w-72">
+      <Select label="Select Chain">
+        <Option>{chains[0]}</Option>
+        <Option>{chains[1]}</Option>
+        <Option>{chains[2]}</Option>
+        <Option>{chains[3]}</Option>
+      </Select>
+    </div>
   );
 };
 
@@ -55,15 +35,17 @@ export const SourceInfoStepView = () => {
         Provide source information
       </Typography>
       <Typography color="blue-gray">
-        Provide the address of the contract you want to deploy to another chain,
-        and the source chain
+        Select the source chain and provide the address of the contract to
+        deploy to another chain
       </Typography>
       <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
         <div className="mb-4 flex justify-start items-center gap-6">
           <div className="w-72">
             <Input crossOrigin="" label="Contract address" />
           </div>
-          <ChainDropdown />
+          <div className="w-72">
+            <ChainDropdown />
+          </div>
         </div>
       </form>
     </Card>
