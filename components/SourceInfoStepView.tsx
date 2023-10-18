@@ -48,7 +48,7 @@ const ChainDropdown = () => {
   );
 };
 
-export const SourceInfoStepComponent = () => {
+export const SourceInfoStepView = () => {
   return (
     <Card color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray">
