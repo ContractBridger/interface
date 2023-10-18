@@ -1,4 +1,4 @@
-import { StepOne } from "@/components/StepOne";
+import { SourceInfoStepComponent } from "@/components/SourceInfoStepComponent";
 import StepperComponent from "@/components/Stepper";
 import { Metadata } from "next";
 import { useState } from "react";
@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <section className="bg-primary flex flex-col items-center py-10 h-screen">
       <StepperComponent>
-        <StepOne />
+        <SourceInfoStepComponent />
       </StepperComponent>
     </section>
   );

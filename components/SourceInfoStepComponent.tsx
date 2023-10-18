@@ -48,19 +48,22 @@ const ChainDropdown = () => {
   );
 };
 
-export const StepOne = () => {
+export const SourceInfoStepComponent = () => {
   return (
     <Card color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray">
         Provide source information
       </Typography>
+      <Typography color="blue-gray">
+        Provide the address of the contract you want to deploy to another chain,
+        and the source chain
+      </Typography>
       <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-        <div className="mb-4 flex justify-start gap-6">
+        <div className="mb-4 flex justify-start items-center gap-6">
           <div className="w-72">
             <Input crossOrigin="" label="Contract address" />
           </div>
           <ChainDropdown />
-          {/* <Input size="lg" label="Contract Address" /> */}
         </div>
       </form>
     </Card>
