@@ -23,7 +23,7 @@ const StepperComponent: FC<{ children: ReactNode }> = ({ children }) => {
       >
         <Step onClick={() => setActiveStep(0)}>
           <UserIcon className="h-5 w-5" />
-          <div className="absolute -bottom-[2rem] md:-bottom-[4rem] w-max text-center">
+          <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography
               color={activeStep === 0 ? "blue-gray" : "gray"}
               className="font-normal md:hidden"
@@ -34,14 +34,13 @@ const StepperComponent: FC<{ children: ReactNode }> = ({ children }) => {
               color={activeStep === 0 ? "blue-gray" : "gray"}
               className="font-normal hidden md:block"
             >
-              Provide source chain
-              <br /> &amp; contract address
+              source details
             </Typography>
           </div>
         </Step>
         <Step onClick={() => setActiveStep(1)}>
           <CogIcon className="h-5 w-5" />
-          <div className="absolute -bottom-[2rem] md:-bottom-[4rem] w-max text-center">
+          <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography
               color={activeStep === 1 ? "blue-gray" : "gray"}
               className="font-normal md:hidden"
@@ -52,15 +51,13 @@ const StepperComponent: FC<{ children: ReactNode }> = ({ children }) => {
               color={activeStep === 1 ? "blue-gray" : "gray"}
               className="font-normal hidden md:block"
             >
-              Pull contract
-              <br />
-              details
+              contract details
             </Typography>
           </div>
         </Step>
         <Step onClick={() => setActiveStep(2)}>
           <BuildingLibraryIcon className="h-5 w-5" />
-          <div className="absolute -bottom-[2rem] md:-bottom-[4rem] w-max text-center">
+          <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography
               color={activeStep === 2 ? "blue-gray" : "gray"}
               className="font-normal md:hidden"
@@ -71,15 +68,13 @@ const StepperComponent: FC<{ children: ReactNode }> = ({ children }) => {
               color={activeStep === 2 ? "blue-gray" : "gray"}
               className="font-normal hidden md:block"
             >
-              Compile
-              <br />
-              contract
+              Contract bytecode
             </Typography>
           </div>
         </Step>
         <Step onClick={() => setActiveStep(2)}>
           <BuildingLibraryIcon className="h-5 w-5" />
-          <div className="absolute -bottom-[2rem] md:-bottom-[4rem] w-max text-center">
+          <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography
               color={activeStep === 3 ? "blue-gray" : "gray"}
               className="font-normal md:hidden"
@@ -90,23 +85,12 @@ const StepperComponent: FC<{ children: ReactNode }> = ({ children }) => {
               color={activeStep === 3 ? "blue-gray" : "gray"}
               className="font-normal hidden md:block"
             >
-              Select chain
-              <br />
-              &amp; deploy
+              Result
             </Typography>
           </div>
         </Step>
       </Stepper>
       <div className="pt-32">{children}</div>
-
-      <div className="mt-32 flex justify-between">
-        <Button onClick={handlePrev} disabled={isFirstStep}>
-          Prev
-        </Button>
-        <Button onClick={handleNext} disabled={isLastStep}>
-          Next
-        </Button>
-      </div>
     </div>
   );
 };
