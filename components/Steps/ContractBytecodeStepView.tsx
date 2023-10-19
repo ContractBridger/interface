@@ -12,14 +12,16 @@ const ContractBytecodeStepView = () => {
       <Typography variant="h4" className="mb-8" color="blue-gray">
         Select destination chain and deploy
       </Typography>
-      <div className="w-72 mb-8">
+      <div className="w-full mb-8">
         <Typography variant="lead" className="mb-2 text-base" color="blue-gray">
           Destination chain:
         </Typography>
-        <SelectChainDropdown />
+        <div className="w-full sm:w-72">
+          <SelectChainDropdown />
+        </div>
       </div>
       <div className="w-full">
-        <Textarea className="h-96" label="Byte Code" value={bytecode} />
+        <Textarea className="h-[400px]" label="Byte Code" value={bytecode} />
       </div>
     </Card>
   );

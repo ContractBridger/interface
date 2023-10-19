@@ -58,8 +58,6 @@ contract Multicall {
    }
 }`;
 
-const codeString = "(num) => num + 1";
-
 const ContractDetailsStepView = () => {
   return (
     <Card color="transparent" shadow={false}>
@@ -69,32 +67,42 @@ const ContractDetailsStepView = () => {
       <Typography color="blue-gray">
         Confirm contract details and provide constructor arguments (if any)
       </Typography>
-      <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-        <div className="mb-4 flex justify-start items-center gap-6">
-          <Input
-            crossOrigin=""
-            size="md"
-            label="Contract name"
-            value={"Multicall"}
-            readOnly
-          />
-          <Input
-            crossOrigin=""
-            size="lg"
-            label="Compiler version"
-            value={"v0.5.12+commit.7709ece9"}
-            readOnly
-          />
+      <form className="mt-8 mb-4 w-full">
+        <div className="mb-6 flex flex-wrap justify-start items-center gap-6">
+          <div className="w-72">
+            <Input
+              crossOrigin=""
+              size="md"
+              label="Contract name"
+              value={"Multicall"}
+              readOnly
+            />
+          </div>
+          <div className="w-72">
+            <Input
+              crossOrigin=""
+              size="md"
+              label="Compiler version"
+              value={"v0.5.12+commit.7709ece9"}
+              readOnly
+            />
+          </div>
         </div>
       </form>
       <Typography variant="h6" color="blue-gray">
         Constructor Arguments
       </Typography>
-      <form className="mb-2 w-80 max-w-screen-lg sm:w-96">
-        <div className="mb-4 flex justify-start items-center gap-6">
-          <Input crossOrigin="" size="md" label="fee" />
-          <Input crossOrigin="" size="lg" label="adminAddress" />
-          <Input crossOrigin="" size="lg" label="startTime" />
+      <form className="mb-2 w-80 w-full">
+        <div className="mb-4 flex flex-wrap justify-start items-center gap-4">
+          <div className="w-72">
+            <Input crossOrigin="" size="md" label="fee" />
+          </div>
+          <div className="w-72">
+            <Input crossOrigin="" size="md" label="adminAddress" />
+          </div>
+          <div className="w-72">
+            <Input crossOrigin="" size="md" label="startTime" />
+          </div>
         </div>
       </form>
       <SyntaxHighlighter

@@ -5,13 +5,11 @@ import { useNetwork } from "wagmi";
 const SelectChainDropdown = () => {
   const network = useNetwork();
   return (
-    <div className="w-72">
-      <Select label="Select Chain">
-        {network.chains.map((chain) => (
-          <Option key={chain.id}>{chain.name}</Option>
-        ))}
-      </Select>
-    </div>
+    <Select label="Select Chain">
+      {network.chains.map((chain) => (
+        <Option key={chain.id}>{chain.name}</Option>
+      ))}
+    </Select>
   );
 };
 
