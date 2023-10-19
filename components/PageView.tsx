@@ -1,14 +1,13 @@
 "use client";
-import CompileContractStepView from "@/components/CompileContractStepView";
-import ContractDetailsStepView from "@/components/ContractDetailsStepView";
-import ResultStepView from "@/components/ResultStepView";
-import { SourceInfoStepView } from "@/components/SourceInfoStepView";
+import ContractBytecodeStepView from "@/components/Steps/ContractBytecodeStepView";
+import ContractDetailsStepView from "@/components/Steps/ContractDetailsStepView";
+import DeploymentResultStepView from "@/components/Steps/DeploymentResultStepView";
+import { SourceDetailsStepView } from "@/components/Steps/SourceDetailsStepView";
 import StepperComponent from "@/components/Stepper";
 import StepperController from "@/components/StepperController";
-import { step } from "@material-tailwind/react";
 import { useState } from "react";
 
-type STEP = 0 | 1 | 2 | 3;
+export type STEP = 0 | 1 | 2 | 3;
 
 const PageView = () => {
   const [activeStep, setActiveStep] = useState<STEP>(0);
@@ -23,13 +22,13 @@ const PageView = () => {
   const getActiveStepView = (step: STEP) => {
     switch (step) {
       case 0:
-        return <SourceInfoStepView />;
+        return <SourceDetailsStepView />;
       case 1:
         return <ContractDetailsStepView />;
       case 2:
-        return <CompileContractStepView />;
+        return <ContractBytecodeStepView />;
       case 3:
-        return <ResultStepView />;
+        return <DeploymentResultStepView />;
       default:
         return null;
     }
@@ -47,6 +46,7 @@ const PageView = () => {
       >
         {acctiveStepView}
         <StepperController
+          activeStep={activeStep}
           isFirstStep={isFirstStep}
           isLastStep={isLastStep}
           handleNext={handleNext}

@@ -1,34 +1,8 @@
 "use client";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import {
-  Button,
-  Card,
-  Input,
-  Menu,
-  MenuHandler,
-  MenuItem,
-  MenuList,
-  Option,
-  Select,
-  Typography,
-} from "@material-tailwind/react";
-import { useState } from "react";
-import { useAccount, useNetwork, useConfig, useSwitchNetwork } from "wagmi";
+import { Card, Input, Typography } from "@material-tailwind/react";
+import SelectChainDropdown from "../SelectChainDropdown";
 
-export const ChainDropdown = () => {
-  const network = useNetwork();
-  return (
-    <div className="w-72">
-      <Select label="Select Chain">
-        {network.chains.map((chain) => (
-          <Option key={chain.id}>{chain.name}</Option>
-        ))}
-      </Select>
-    </div>
-  );
-};
-
-export const SourceInfoStepView = () => {
+export const SourceDetailsStepView = () => {
   return (
     <Card color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray">
@@ -44,7 +18,7 @@ export const SourceInfoStepView = () => {
             <Input crossOrigin="" label="Contract address" />
           </div>
           <div className="w-72">
-            <ChainDropdown />
+            <SelectChainDropdown />
           </div>
         </div>
       </form>

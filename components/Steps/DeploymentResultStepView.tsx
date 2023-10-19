@@ -2,7 +2,7 @@
 import { Card, Typography } from "@material-tailwind/react";
 import React from "react";
 
-const ResultStepView = () => {
+const DeploymentResultStepView = () => {
   return (
     <Card color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray">
@@ -48,4 +48,4 @@ const ResultStepView = () => {
   );
 };
 
-export default ResultStepView;
+export default DeploymentResultStepView;
