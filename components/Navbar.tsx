@@ -5,6 +5,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
 import { useAccount } from "wagmi";
 
+import { Navbar as MaterialTailwindNavbar } from "@material-tailwind/react";
 const Navbar = ({ setIsConn }) => {
   const { isConnected } = useAccount();
 
@@ -13,10 +14,10 @@ const Navbar = ({ setIsConn }) => {
   }, [isConnected]);
 
   return (
-    <nav className="w-full flex justify-between items-center p-3 bg-primary sticky top-0">
-      <span>Logo</span>
+    <MaterialTailwindNavbar className="w-full flex justify-between items-center p-0 bg-white sticky top-0 h-max max-w-full rounded-none py-4 lg:py-8 shadow-none z-50">
+      <span className="">Logo</span>
       <ConnectButton showBalance={false} />
-    </nav>
+    </MaterialTailwindNavbar>
   );
 };
 
