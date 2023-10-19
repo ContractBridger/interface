@@ -13,16 +13,16 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useState } from "react";
+import { useAccount, useNetwork, useConfig, useSwitchNetwork } from "wagmi";
 
 export const ChainDropdown = () => {
-  const chains = ["mainnet", "sepola", "bsc", "bsc testnet"];
+  const network = useNetwork();
   return (
     <div className="w-72">
       <Select label="Select Chain">
-        <Option>{chains[0]}</Option>
-        <Option>{chains[1]}</Option>
-        <Option>{chains[2]}</Option>
-        <Option>{chains[3]}</Option>
+        {network.chains.map((chain) => (
+          <Option key={chain.id}>{chain.name}</Option>
+        ))}
       </Select>
     </div>
   );
