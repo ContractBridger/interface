@@ -2,9 +2,10 @@
 import React, { Dispatch, FC, ReactNode, SetStateAction } from "react";
 import { Stepper, Step, Typography } from "@material-tailwind/react";
 import {
-  CogIcon,
-  UserIcon,
-  BuildingLibraryIcon,
+  DocumentMagnifyingGlassIcon,
+  DocumentChartBarIcon,
+  CodeBracketIcon,
+  DocumentCheckIcon,
 } from "@heroicons/react/24/outline";
 
 const StepperComponent: FC<{
@@ -32,7 +33,7 @@ const StepperComponent: FC<{
         isFirstStep={(value) => setIsFirstStep(value)}
       >
         <Step onClick={() => handleStepClick(0)}>
-          <UserIcon className="h-5 w-5" />
+          <DocumentMagnifyingGlassIcon className="h-5 w-5" />
           <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography
               color={activeStep === 0 ? "blue-gray" : "gray"}
@@ -49,7 +50,7 @@ const StepperComponent: FC<{
           </div>
         </Step>
         <Step onClick={() => handleStepClick(1)}>
-          <CogIcon className="h-5 w-5" />
+          <DocumentChartBarIcon className="h-5 w-5" />
           <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography
               color={activeStep === 1 ? "blue-gray" : "gray"}
@@ -66,7 +67,7 @@ const StepperComponent: FC<{
           </div>
         </Step>
         <Step onClick={() => handleStepClick(2)}>
-          <BuildingLibraryIcon className="h-5 w-5" />
+          <CodeBracketIcon className="h-5 w-5" />
           <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography
               color={activeStep === 2 ? "blue-gray" : "gray"}
@@ -83,7 +84,7 @@ const StepperComponent: FC<{
           </div>
         </Step>
         <Step onClick={() => handleStepClick(3)}>
-          <BuildingLibraryIcon className="h-5 w-5" />
+          <DocumentCheckIcon className="h-5 w-5" />
           <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography
               color={activeStep === 3 ? "blue-gray" : "gray"}
