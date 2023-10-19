@@ -92,7 +92,7 @@ const ContractDetailsStepView = () => {
       <Typography variant="h6" color="blue-gray">
         Constructor Arguments
       </Typography>
-      <form className="mb-2 w-80 w-full">
+      <form className="mb-2 w-full">
         <div className="mb-4 flex flex-wrap justify-start items-center gap-4">
           <div className="w-72">
             <Input crossOrigin="" size="md" label="fee" />
