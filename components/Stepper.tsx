@@ -1,19 +1,29 @@
 "use client";
-import React, { FC, ReactNode } from "react";
-import { Stepper, Step, Button, Typography } from "@material-tailwind/react";
+import React, { Dispatch, FC, ReactNode, SetStateAction } from "react";
+import { Stepper, Step, Typography } from "@material-tailwind/react";
 import {
   CogIcon,
   UserIcon,
   BuildingLibraryIcon,
 } from "@heroicons/react/24/outline";
 
-const StepperComponent: FC<{ children: ReactNode }> = ({ children }) => {
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [isLastStep, setIsLastStep] = React.useState(false);
-  const [isFirstStep, setIsFirstStep] = React.useState(false);
-
-  const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1);
-  const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
+const StepperComponent: FC<{
+  activeStep: number;
+  setActiveStep: Dispatch<SetStateAction<number>>;
+  setIsFirstStep: Dispatch<SetStateAction<boolean>>;
+  setIsLastStep: Dispatch<SetStateAction<boolean>>;
+  children: ReactNode;
+}> = ({
+  activeStep,
+  setActiveStep,
+  setIsFirstStep,
+  setIsLastStep,
+  children,
+}) => {
+  const handleStepClick = (step: number) => {
+    // should only allow back click not next
+    if (step < activeStep) setActiveStep(step);
+  };
   return (
     <div className="w-full py-4">
       <Stepper
@@ -21,7 +31,7 @@ const StepperComponent: FC<{ children: ReactNode }> = ({ children }) => {
         isLastStep={(value) => setIsLastStep(value)}
         isFirstStep={(value) => setIsFirstStep(value)}
       >
-        <Step onClick={() => setActiveStep(0)}>
+        <Step onClick={() => handleStepClick(0)}>
           <UserIcon className="h-5 w-5" />
           <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography
@@ -38,7 +48,7 @@ const StepperComponent: FC<{ children: ReactNode }> = ({ children }) => {
             </Typography>
           </div>
         </Step>
-        <Step onClick={() => setActiveStep(1)}>
+        <Step onClick={() => handleStepClick(1)}>
           <CogIcon className="h-5 w-5" />
           <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography
@@ -55,7 +65,7 @@ const StepperComponent: FC<{ children: ReactNode }> = ({ children }) => {
             </Typography>
           </div>
         </Step>
-        <Step onClick={() => setActiveStep(2)}>
+        <Step onClick={() => handleStepClick(2)}>
           <BuildingLibraryIcon className="h-5 w-5" />
           <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography
@@ -72,7 +82,7 @@ const StepperComponent: FC<{ children: ReactNode }> = ({ children }) => {
             </Typography>
           </div>
         </Step>
-        <Step onClick={() => setActiveStep(2)}>
+        <Step onClick={() => handleStepClick(3)}>
           <BuildingLibraryIcon className="h-5 w-5" />
           <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography
