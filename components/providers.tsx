@@ -1,13 +1,31 @@
 "use client";
 import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { mainnet, sepolia, bsc, bscTestnet } from "wagmi/chains";
+import {
+  mainnet,
+  sepolia,
+  bsc,
+  bscTestnet,
+  arbitrum,
+  arbitrumGoerli,
+  base,
+  baseGoerli,
+} from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { ToastContainer } from "react-toastify";
 import { ThemeProvider } from "@material-tailwind/react";
 
 const { chains, publicClient } = configureChains(
-  [mainnet, sepolia, bsc, bscTestnet],
+  [
+    mainnet,
+    sepolia,
+    bsc,
+    bscTestnet,
+    arbitrum,
+    arbitrumGoerli,
+    base,
+    baseGoerli,
+  ],
   [publicProvider()],
 );
 
