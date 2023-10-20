@@ -20,7 +20,7 @@ const ContractBytecodeStepView = () => {
           Destination chain:
         </Typography>
         <div className="w-full sm:w-72">
-          <SelectChainDropdown selectedChain={null} handleChange={() => {}} />
+          <SelectChainDropdown handleChange={() => {}} />
         </div>
       </div>
       <div className="w-full">
