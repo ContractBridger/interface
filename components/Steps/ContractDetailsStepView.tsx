@@ -69,7 +69,7 @@ const ContractDetailsStepView = () => {
       </Typography>
       <form className="mt-8 mb-4 w-full">
         <div className="mb-6 flex flex-wrap justify-start items-center gap-6">
-          <div className="w-72">
+          <div className="w-full sm:w-72">
             <Input
               crossOrigin=""
               size="md"
@@ -78,7 +78,7 @@ const ContractDetailsStepView = () => {
               readOnly
             />
           </div>
-          <div className="w-72">
+          <div className="w-full sm:w-72">
             <Input
               crossOrigin=""
               size="md"
@@ -94,13 +94,13 @@ const ContractDetailsStepView = () => {
       </Typography>
       <form className="mb-2 w-full">
         <div className="mb-4 flex flex-wrap justify-start items-center gap-4">
-          <div className="w-72">
+          <div className="w-full sm:w-72">
             <Input crossOrigin="" size="md" label="fee" />
           </div>
-          <div className="w-72">
+          <div className="w-full sm:w-72">
             <Input crossOrigin="" size="md" label="adminAddress" />
           </div>
-          <div className="w-72">
+          <div className="w-full sm:w-72">
             <Input crossOrigin="" size="md" label="startTime" />
           </div>
         </div>
