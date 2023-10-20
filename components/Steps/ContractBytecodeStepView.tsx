@@ -9,7 +9,10 @@ const bytecode =
 const ContractBytecodeStepView = () => {
   return (
     <Card color="transparent" shadow={false}>
-      <Typography variant="h4" className="mb-8" color="blue-gray">
+      <Typography variant="h4" color="blue-gray">
+        Contract Bytecode
+      </Typography>
+      <Typography color="blue-gray">
         Select destination chain and deploy
       </Typography>
       <div className="w-full mb-8">
@@ -21,7 +24,7 @@ const ContractBytecodeStepView = () => {
         </div>
       </div>
       <div className="w-full">
-        <Textarea className="h-[400px]" label="Byte Code" value={bytecode} />
+        <Textarea className="h-[399px]" label="Byte Code" value={bytecode} />
       </div>
     </Card>
   );
