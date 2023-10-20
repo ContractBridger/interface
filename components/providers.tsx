@@ -14,6 +14,7 @@ import {
 import { publicProvider } from "wagmi/providers/public";
 import { ToastContainer } from "react-toastify";
 import { ThemeProvider } from "@material-tailwind/react";
+import "react-toastify/dist/ReactToastify.css";
 
 const { chains, publicClient } = configureChains(
   [
