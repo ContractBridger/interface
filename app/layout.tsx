@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
       <body
         className={
           inter.className +
-          " container mx-auto -m-6 max-h-[768px] w-[calc(100%+48px)] overflow-scroll"
+          " container mx-auto -m-6 max-h-[768px] w-[calc(100%+48px)] overflow-scroll bg-inherit"
         }
       >
         <Providers>
