@@ -1,11 +1,11 @@
 "use client";
 import { Card, Input, Typography } from "@material-tailwind/react";
 import SelectChainDropdown from "../SelectChainDropdown";
-import { FC, useCallback } from "react";
+import { Dispatch, FC, SetStateAction, useCallback } from "react";
 
 export const SourceDetailsStepView: FC<{
   contractAddress: string;
-  handleChange: (key: "contractAddress" | "chain", value: string) => void;
+  handleChange: Dispatch<SetStateAction<string>>;
 }> = ({ contractAddress, handleChange }) => {
   return (
     <Card color="transparent" shadow={false}>
@@ -23,13 +23,11 @@ export const SourceDetailsStepView: FC<{
               crossOrigin=""
               label="Contract address"
               value={contractAddress}
-              onChange={(e) => handleChange("contractAddress", e.target.value)}
+              onChange={(e) => handleChange(e.target.value)}
             />
           </div>
           <div className="w-full sm:w-72">
-            <SelectChainDropdown
-              handleChange={(chain) => handleChange("chain", chain)}
-            />
+            <SelectChainDropdown />
           </div>
         </div>
       </form>
