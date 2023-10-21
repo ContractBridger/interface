@@ -19,6 +19,10 @@ export interface Dictionary<T> {
 }
 
 const PageView = () => {
+  const network = useNetwork();
+  const chainIsUnsupported = network.chain?.unsupported;
+
+  let currentChainId = network.chain?.id;
   const signer = useEthersSigner();
   const provider = useEthersProvider();
   const account = useAccount();
@@ -38,19 +42,16 @@ const PageView = () => {
     ABI: string;
   } | null>(null);
 
+  const [sendingRequest, setSendingRequest] = useState(false);
+
   const [constructorArgs, setConstructorArgs] =
     useState<Dictionary<string> | null>({
       fee: "100",
       admin: "0x23e34",
     });
 
-  const [sourceInfo, setSourceInfo] = useState<{
-    contractAddress: string;
-    chain: String | null;
-  }>({
-    contractAddress: "",
-    chain: null,
-  });
+  const [sourceContractAddress, setSourceContractAddress] =
+    useState<string>("");
 
   const [deploymentReceipt, setDeploymentReceipt] =
     useState<ContractTransactionReceipt | null>(null);
@@ -59,54 +60,33 @@ const PageView = () => {
     setConstructorArgs((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSourceInfoChange = useCallback(
-    (
-      key: keyof typeof sourceInfo,
-      value:
-        | (typeof sourceInfo)["contractAddress"]
-        | (typeof sourceInfo)["chain"],
-    ) => {
-      switch (key) {
-        case "contractAddress":
-          return setSourceInfo((prev) => ({
-            ...prev,
-            contractAddress: value as (typeof sourceInfo)["contractAddress"],
-          }));
-        case "chain":
-          return setSourceInfo((prev) => ({
-            ...prev,
-            chain: value as (typeof sourceInfo)["chain"],
-          }));
-        default:
-          break;
-      }
-    },
-    [],
-  );
-
   const handleNext = () =>
     !isLastStep && setActiveStep((cur) => (cur + 1) as STEP);
   const handlePrev = () =>
     !isFirstStep && setActiveStep((cur) => (cur - 1) as STEP);
 
-  const pullContract = async () => {
-    if (!isAddress(sourceInfo.contractAddress)) {
+  const pullContract = useCallback(async () => {
+    if (!isAddress(sourceContractAddress)) {
       toast.error("Please provide a valid contract address");
       return;
     }
 
-    if (!sourceInfo.chain) {
-      toast.error("Please select chain");
+    if (chainIsUnsupported) {
+      toast.error("Please switch to one of the supported chain");
       return;
     }
 
     try {
       // check that the provided address is not an EOA
-      const code = await provider.getCode(sourceInfo.contractAddress);
+      const code = await provider.getCode(sourceContractAddress);
       if (code === "0x") {
-        toast.error("Address provided is not a contract address");
+        toast.error(
+          `Address provided is not a contract address on ${network.chain.name} network`,
+        );
         return;
       }
+
+      setSendingRequest(true);
 
       // make request to the server to fetch the contract details
       let options = {
@@ -115,12 +95,17 @@ const PageView = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          address: sourceInfo.contractAddress,
-          networkId: sourceInfo.chain,
+          address: sourceContractAddress,
+          networkId: currentChainId,
         }),
       };
       const response = await fetch(`${SERVER_URL}/pull-contract`, options);
       let data = await response.json();
+
+      if (data === "SOURCE_CODE_NOT_FOUND") {
+        toast.error("Could not find source code for unverified contract!");
+        return;
+      }
       let sourceCode;
       if (data.sourceCode.startsWith("{{")) {
         sourceCode = JSON.parse(data.sourceCode.slice(1, -1));
@@ -159,16 +144,19 @@ const PageView = () => {
       console.error("error: ", error);
       toast.error(error.message || "error pulling contract details");
       return;
+    } finally {
+      setSendingRequest(false);
     }
-  };
+  }, [sourceContractAddress, chainIsUnsupported, provider]);
 
-  const compileContract = async () => {
+  const compileContract = useCallback(async () => {
     if (!contractData) {
       toast.error("No contract pulled yet!");
       return;
     }
 
     try {
+      setSendingRequest(true);
       // make request to the server to compile the contract
       let options = {
         method: "POST",
@@ -189,18 +177,14 @@ const PageView = () => {
       handleNext();
     } catch (error) {
       console.error("error: ", error);
-      if (error.info.error.code === 4001) {
-        toast.error(
-          "MetaMask Tx Signature: User denied transaction signature.",
-        );
-      } else {
-        toast.error("An error occured! check the console for more info");
-      }
+      toast.error(error.message || "error compiling contract!!!");
       return;
+    } finally {
+      setSendingRequest(false);
     }
-  };
+  }, [contractData]);
 
-  const deployContract = async () => {
+  const deployContract = useCallback(async () => {
     if (!compiledContract) {
       toast.error("No contract to deploy");
       return;
@@ -217,6 +201,7 @@ const PageView = () => {
       );
 
       const baseContract = await contractFactory.deploy();
+      setSendingRequest(true);
 
       const deploymentTransactionReceipt = await baseContract
         .deploymentTransaction()
@@ -227,29 +212,29 @@ const PageView = () => {
       if (deploymentTransactionReceipt.status === 1) {
         toast.success("Contract deployment successfull!");
       } else {
-        if (deploymentTransactionReceipt.status === 1) {
-          toast.error("Contract deployment failed!");
-        }
+        toast.error("Contract deployment failed!");
       }
       handleNext();
     } catch (error) {
-      console.error("error: ", error);
       if (error.info.error.code === 4001) {
         toast.error("User denied transaction signature.");
       } else {
+        console.error("error: ", error);
         toast.error("An error occured! check the console for more info");
       }
       return;
+    } finally {
+      setSendingRequest(false);
     }
-  };
+  }, [compiledContract, account, signer]);
 
   const getActiveStepView = (step: STEP) => {
     switch (step) {
       case 0:
         return (
           <SourceDetailsStepView
-            {...sourceInfo}
-            handleChange={handleSourceInfoChange}
+            contractAddress={sourceContractAddress}
+            handleChange={setSourceContractAddress}
           />
         );
       case 1:
@@ -280,7 +265,7 @@ const PageView = () => {
       default:
         break;
     }
-  }, [activeStep, sourceInfo]);
+  }, [activeStep, pullContract, compileContract, deployContract]);
 
   const activeStepView = getActiveStepView(activeStep);
 
@@ -299,6 +284,7 @@ const PageView = () => {
           isLastStep={isLastStep}
           handlePrev={handlePrev}
           actionHandler={getStepHandler()}
+          sendingRequest={sendingRequest}
         />
       </StepperComponent>
     </section>

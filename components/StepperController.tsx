@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@material-tailwind/react";
-import React, { FC, useCallback, useMemo } from "react";
+import { Button, Spinner } from "@material-tailwind/react";
+import React, { FC, useMemo } from "react";
 import { STEP } from "./PageView";
 
 const StepperController: FC<{
@@ -9,7 +9,15 @@ const StepperController: FC<{
   isLastStep: boolean;
   handlePrev: () => void;
   actionHandler: () => Promise<void>;
-}> = ({ activeStep, isFirstStep, isLastStep, handlePrev, actionHandler }) => {
+  sendingRequest: boolean;
+}> = ({
+  activeStep,
+  isFirstStep,
+  isLastStep,
+  handlePrev,
+  actionHandler,
+  sendingRequest,
+}) => {
   const nextButtonText = useMemo(() => {
     switch (activeStep) {
       case 0:
@@ -29,8 +37,8 @@ const StepperController: FC<{
         Prev
       </Button>
       {!isLastStep && (
-        <Button onClick={actionHandler} disabled={isLastStep}>
-          {nextButtonText}
+        <Button onClick={actionHandler} disabled={isLastStep || sendingRequest}>
+          {sendingRequest ? <Spinner color="amber" /> : nextButtonText}
         </Button>
       )}
     </div>

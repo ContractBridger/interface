@@ -3,26 +3,29 @@ import { Card, Textarea, Typography } from "@material-tailwind/react";
 import React, { FC, useState } from "react";
 import SelectChainDropdown from "../SelectChainDropdown";
 import { toast } from "react-toastify";
-import { useSwitchNetwork } from "wagmi";
+import { useNetwork, useSwitchNetwork } from "wagmi";
 import {} from "@rainbow-me/rainbowkit";
+import { NotificationDialog } from "../NetworkNoticeDialog";
 
 const ContractBytecodeStepView: FC<{
   data: { bytecode: string; ABI: string };
 }> = ({ data: { bytecode, ABI } }) => {
-  const { chains, error, pendingChainId, switchNetwork, status } =
-    useSwitchNetwork();
+  const network = useNetwork();
   if (!bytecode) {
     toast.error("no contract bytecode provided");
     return;
   }
   return (
     <Card color="transparent" shadow={false}>
+      <NotificationDialog
+        networkName={network.chain.name}
+        note="You may want to consider switching to your prefered destination chain before deploying"
+      />
       <Typography variant="h4" color="blue-gray">
         Contract Bytecode
       </Typography>
       <Typography color="blue-gray">
-        Supply constructor argument (if any), select destination chain, and
-        deploy
+        Switch to destination chain and Supply constructor argument (if any)
       </Typography>
 
       {/* <form className="mt-8 mb-4 w-full">
@@ -77,19 +80,15 @@ const ContractBytecodeStepView: FC<{
           Destination chain:
         </Typography>
         <div className="w-full sm:w-72">
-          <SelectChainDropdown
-            handleChange={(chain) => switchNetwork?.(chain)}
-          />
+          <SelectChainDropdown />
         </div>
       </div>
-      <div className="w-full">
-        <Textarea
-          className="h-[399px]"
-          label="Byte Code"
-          value={bytecode}
-          readOnly
-        />
-      </div>
+      <Textarea
+        className="w-full h-[400px]"
+        label="Byte Code"
+        value={bytecode}
+        readOnly
+      />
     </Card>
   );
 };

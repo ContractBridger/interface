@@ -50,7 +50,7 @@ const DeploymentResultStepView: FC<{
         <div className="flex flex-col mb-4">
           <span className="text-sm">See more</span>
           <a
-            href={`${network.chain.blockExplorers.default.url}/tx/${data.hash}`}
+            href={`${network.chain?.blockExplorers?.default?.url}/tx/${data.hash}`}
             target="_blank"
             className="font-bold text-green-800 hover:underline"
           >
