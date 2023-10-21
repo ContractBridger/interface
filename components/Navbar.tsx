@@ -15,7 +15,9 @@ const Navbar = ({ setIsConn }) => {
 
   return (
     <MaterialTailwindNavbar className="w-full flex justify-between items-center p-0 bg-white sticky top-0 h-max max-w-full rounded-none py-4 lg:py-8 shadow-none z-50">
-      <span className="">Logo</span>
+      <Link href="/" className="text-black text-3xl font-black">
+        Logo
+      </Link>
       <ConnectButton showBalance={false} />
     </MaterialTailwindNavbar>
   );
