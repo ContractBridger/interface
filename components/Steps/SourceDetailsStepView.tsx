@@ -5,15 +5,8 @@ import { FC, useCallback } from "react";
 
 export const SourceDetailsStepView: FC<{
   contractAddress: string;
-  chain: number | null;
-  handleChange: (
-    key: "contractAddress" | "chain",
-    value: string | number,
-  ) => void;
-}> = ({ contractAddress, chain, handleChange }) => {
-  const handleChainChange = useCallback((chain) => {
-    handleChange("chain", chain);
-  }, []);
+  handleChange: (key: "contractAddress" | "chain", value: string) => void;
+}> = ({ contractAddress, handleChange }) => {
   return (
     <Card color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray">
@@ -35,8 +28,7 @@ export const SourceDetailsStepView: FC<{
           </div>
           <div className="w-full sm:w-72">
             <SelectChainDropdown
-              selectedChain={chain}
-              handleChange={handleChainChange}
+              handleChange={(chain) => handleChange("chain", chain)}
             />
           </div>
         </div>
