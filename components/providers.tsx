@@ -4,12 +4,11 @@ import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import {
   mainnet,
   sepolia,
+  goerli,
   bsc,
   bscTestnet,
-  arbitrum,
-  arbitrumGoerli,
-  base,
-  baseGoerli,
+  polygon,
+  polygonMumbai,
 } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { ToastContainer } from "react-toastify";
@@ -17,16 +16,7 @@ import { ThemeProvider } from "@material-tailwind/react";
 import "react-toastify/dist/ReactToastify.css";
 
 const { chains, publicClient } = configureChains(
-  [
-    mainnet,
-    sepolia,
-    bsc,
-    bscTestnet,
-    arbitrum,
-    arbitrumGoerli,
-    base,
-    baseGoerli,
-  ],
+  [mainnet, sepolia, goerli, bsc, bscTestnet, polygon, polygonMumbai],
   [publicProvider()],
 );
 
@@ -51,8 +41,9 @@ const Providers = ({ children }) => {
     <ThemeProvider>
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains} appInfo={appInfo} modalSize="wide">
+          {children}
           <ToastContainer
-            position="top-right"
+            position="bottom-right"
             autoClose={4500}
             hideProgressBar={false}
             newestOnTop={false}
@@ -63,9 +54,6 @@ const Providers = ({ children }) => {
             pauseOnHover
             theme="dark"
           />
-
-          {children}
-          <ToastContainer />
         </RainbowKitProvider>
       </WagmiConfig>
     </ThemeProvider>
