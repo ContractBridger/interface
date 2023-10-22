@@ -4,9 +4,6 @@ export const metadata: Metadata = {
   title: "Contract Bridger",
   description:
     "a tool for taking a contract already existing on one chain and deploying it to another chain",
-  icons: {
-    icon: "images/icon.png",
-  },
 };
 
 export default function Home() {
