@@ -33,7 +33,7 @@ const StepperController: FC<{
 
   return (
     <div className="mt-8 flex justify-between">
-      <Button onClick={handlePrev} disabled={isFirstStep}>
+      <Button onClick={handlePrev} disabled={isFirstStep || sendingRequest}>
         Prev
       </Button>
       {!isLastStep && (
