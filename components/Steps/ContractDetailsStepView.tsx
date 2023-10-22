@@ -3,12 +3,9 @@ import { Card, Typography } from "@material-tailwind/react";
 import { FC } from "react";
 import { PrismAsyncLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import prism from "react-syntax-highlighter/dist/esm/styles/prism/prism";
-import { Dictionary } from "../PageView";
 
 const ContractDetailsStepView: FC<{
   contractData: any | null;
-  constructorArgs: Dictionary<string> | null;
-  handleContructorArgsChange: (key: string, value: string) => void;
 }> = ({ contractData }) => {
   if (!contractData) return;
 
