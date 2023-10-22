@@ -1,15 +1,24 @@
 "use client";
-import { Card, Textarea, Typography } from "@material-tailwind/react";
-import React, { FC, useState } from "react";
+import { Card, Input, Textarea, Typography } from "@material-tailwind/react";
+import React, { FC, Fragment, useState } from "react";
 import SelectChainDropdown from "../SelectChainDropdown";
 import { toast } from "react-toastify";
-import { useNetwork, useSwitchNetwork } from "wagmi";
+import { useNetwork } from "wagmi";
 import {} from "@rainbow-me/rainbowkit";
 import { NotificationDialog } from "../NetworkNoticeDialog";
+import { Dictionary } from "../PageView";
 
 const ContractBytecodeStepView: FC<{
-  data: { bytecode: string; ABI: string };
-}> = ({ data: { bytecode, ABI } }) => {
+  data: { bytecode: string; ABI: any[] };
+  constructorArgs: Dictionary<string> | null;
+  handleContructorArgsChange: (key: string, value: string) => void;
+}> = ({
+  data: { bytecode, ABI },
+  constructorArgs,
+  handleContructorArgsChange,
+}) => {
+  const constructorArgsKeys = Object.keys(constructorArgs || {});
+
   const network = useNetwork();
   if (!bytecode) {
     toast.error("no contract bytecode provided");
@@ -24,32 +33,10 @@ const ContractBytecodeStepView: FC<{
       <Typography variant="h4" color="blue-gray">
         Contract Bytecode
       </Typography>
-      <Typography color="blue-gray">
+      <Typography color="blue-gray" className="mb-8">
         Switch to destination chain and Supply constructor argument (if any)
       </Typography>
 
-      {/* <form className="mt-8 mb-4 w-full">
-        <div className="mb-6 flex flex-wrap justify-start items-center gap-6">
-          <div className="w-full sm:w-72">
-            <Input
-              crossOrigin=""
-              size="md"
-              label="Contract name"
-              value={contractData.contractName}
-              readOnly
-            />
-          </div>
-          <div className="w-full sm:w-72">
-            <Input
-              crossOrigin=""
-              size="md"
-              label="Optimization used"
-              value={contractData.runs}
-              readOnly
-            />
-          </div>
-        </div>
-      </form>
       {!!constructorArgs ? (
         <Fragment>
           <Typography variant="h6" color="blue-gray">
@@ -73,7 +60,7 @@ const ContractBytecodeStepView: FC<{
             </div>
           </form>
         </Fragment>
-      ) : null} */}
+      ) : null}
 
       <div className="w-full mb-8">
         <Typography variant="lead" className="mb-2 text-base" color="blue-gray">

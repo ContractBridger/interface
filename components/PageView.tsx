@@ -8,7 +8,7 @@ import StepperController from "@/components/StepperController";
 import { useCallback, useState } from "react";
 import { ContractFactory, ContractTransactionReceipt, isAddress } from "ethers";
 import { toast } from "react-toastify";
-import { useAccount, useNetwork, useWalletClient } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 import { useEthersProvider, useEthersSigner } from "hooks/ethersAdapters";
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -39,16 +39,13 @@ const PageView = () => {
   } | null>(null);
   const [compiledContract, setCompiledContract] = useState<{
     bytecode: string;
-    ABI: string;
+    ABI: any[];
   } | null>(null);
 
   const [sendingRequest, setSendingRequest] = useState(false);
 
   const [constructorArgs, setConstructorArgs] =
-    useState<Dictionary<string> | null>({
-      fee: "100",
-      admin: "0x23e34",
-    });
+    useState<Dictionary<string> | null>(null);
 
   const [sourceContractAddress, setSourceContractAddress] =
     useState<string>("");
@@ -56,9 +53,15 @@ const PageView = () => {
   const [deploymentReceipt, setDeploymentReceipt] =
     useState<ContractTransactionReceipt | null>(null);
 
-  const handleContructorArgsChange = (key: string, value: string) => {
-    setConstructorArgs((prev) => ({ ...prev, [key]: value }));
-  };
+  const [contractVerificationData, setContractVerificationData] =
+    useState(null);
+
+  const handleContructorArgsChange = useCallback(
+    (key: string, value: string) => {
+      setConstructorArgs((prev) => ({ ...prev, [key]: value }));
+    },
+    [],
+  );
 
   const handleNext = () =>
     !isLastStep && setActiveStep((cur) => (cur + 1) as STEP);
@@ -172,7 +175,21 @@ const PageView = () => {
       const response = await fetch(`${SERVER_URL}/compile-contract`, options);
 
       let data = await response.json();
+
       setCompiledContract(data);
+
+      const constructorFragment = data.ABI.find(
+        (fragment) => fragment["type"] === "constructor",
+      );
+
+      if (!!constructorFragment) {
+        let args = {};
+        constructorFragment["inputs"].forEach(
+          (input: any) => (args[input.name] = ""),
+        );
+
+        setConstructorArgs(args);
+      }
       toast.success("Contract successfully compilled!");
       handleNext();
     } catch (error) {
@@ -193,6 +210,21 @@ const PageView = () => {
       toast.error("Please connect to a wallet");
       return;
     }
+
+    if (constructorArgs) {
+      const constructorArgsKeys = Object.keys(constructorArgs || {});
+
+      const someArgsNotProvided = constructorArgsKeys.some(
+        (key) => !constructorArgs[key],
+      );
+
+      if (someArgsNotProvided) {
+        toast.error("Please provide the constructor argument(s) value(s)");
+
+        return;
+      }
+    }
+
     try {
       const contractFactory = new ContractFactory(
         compiledContract.ABI,
@@ -200,7 +232,11 @@ const PageView = () => {
         signer,
       );
 
-      const baseContract = await contractFactory.deploy();
+      const constructorArgValues = Object.values(constructorArgs || {});
+
+      const baseContract = await contractFactory.deploy(
+        ...constructorArgValues,
+      );
       setSendingRequest(true);
 
       const deploymentTransactionReceipt = await baseContract
@@ -216,8 +252,15 @@ const PageView = () => {
       }
       handleNext();
     } catch (error) {
-      if (error.info.error.code === 4001) {
+      if (error?.info?.error?.code === 4001) {
         toast.error("User denied transaction signature.");
+      } else if (
+        error?.message === "incorrect number of arguments to constructor" ||
+        error?.code === "INVALID_ARGUMENT"
+      ) {
+        toast.error(
+          "Please fill in the constructor arguments with correct types",
+        );
       } else {
         console.error("error: ", error);
         toast.error("An error occured! check the console for more info");
@@ -227,6 +270,43 @@ const PageView = () => {
       setSendingRequest(false);
     }
   }, [compiledContract, account, signer]);
+
+  // const verifyContract = useCallback(async () => {
+  //   try {
+  //     setSendingRequest(true);
+  //     // make request to the server to verify the contract
+  //     let options = {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         contractAddress: deploymentReceipt.to,
+  //         contractName: contractData.contractName,
+  //         chainId: network.chain.id,
+  //         optimizationUsed: contractData.optimizationUsed,
+  //         sourceCode: contractData.sourceCode, // if this fails, try contractData.fullSourceCodeString,
+  //         compilerVersion: "",
+  //         codeFormat: "solidity-single-file",
+  //       }),
+  //     };
+
+  //     const response = await fetch(`${SERVER_URL}/verify-contract`, options);
+
+  //     let data = await response.json();
+
+  //     setContractVerificationData(data);
+
+  //     toast.success("Contract successfully verified!");
+  //     handleNext();
+  //   } catch (error) {
+  //     console.error("error: ", error);
+  //     toast.error(error.message || "error verifying contract details");
+  //     return;
+  //   } finally {
+  //     setSendingRequest(false);
+  //   }
+  // }, []);
 
   const getActiveStepView = (step: STEP) => {
     switch (step) {
@@ -238,15 +318,15 @@ const PageView = () => {
           />
         );
       case 1:
+        return <ContractDetailsStepView contractData={contractData} />;
+      case 2:
         return (
-          <ContractDetailsStepView
-            contractData={contractData}
+          <ContractBytecodeStepView
+            data={compiledContract}
             constructorArgs={constructorArgs}
             handleContructorArgsChange={handleContructorArgsChange}
           />
         );
-      case 2:
-        return <ContractBytecodeStepView data={compiledContract} />;
       case 3:
         return <DeploymentResultStepView data={deploymentReceipt} />;
       default:
