@@ -4,5 +4,6 @@
 @layer base {
   html {
     @apply scroll-smooth;
+    background-color: #fff;
   }
 }

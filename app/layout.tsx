@@ -11,7 +11,12 @@ export default function RootLayout({ children }) {
   const [isConn, setIsConn] = useState(false);
   return (
     <html lang="en">
-      <body className={inter.className + " container mx-auto"}>
+      <body
+        className={
+          inter.className +
+          " container mx-auto -m-6 max-h-[768px] w-[calc(100%+48px)] overflow-scroll bg-inherit"
+        }
+      >
         <Providers>
           <Navbar setIsConn={setIsConn} />
           {children}

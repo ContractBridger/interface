@@ -1,13 +1,14 @@
 "use client";
 import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { mainnet, sepolia, bsc, bscTestnet } from "wagmi/chains";
+import { mainnet, sepolia, goerli } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { ToastContainer } from "react-toastify";
 import { ThemeProvider } from "@material-tailwind/react";
+import "react-toastify/dist/ReactToastify.css";
 
 const { chains, publicClient } = configureChains(
-  [mainnet, sepolia, bsc, bscTestnet],
+  [mainnet, sepolia, goerli],
   [publicProvider()],
 );
 
@@ -32,8 +33,9 @@ const Providers = ({ children }) => {
     <ThemeProvider>
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains} appInfo={appInfo} modalSize="wide">
+          {children}
           <ToastContainer
-            position="top-right"
+            position="bottom-right"
             autoClose={4500}
             hideProgressBar={false}
             newestOnTop={false}
@@ -44,9 +46,6 @@ const Providers = ({ children }) => {
             pauseOnHover
             theme="dark"
           />
-
-          {children}
-          <ToastContainer />
         </RainbowKitProvider>
       </WagmiConfig>
     </ThemeProvider>
